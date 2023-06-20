@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { useForm, Controller } from 'react-hook-form';
 
 import {
@@ -6,7 +5,6 @@ import {
     Divider,
     Container,
     Paper,
-    useTheme,
     TextField,
     FormControlLabel,
     Checkbox,
@@ -17,7 +15,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 export default function Filter({ searchCB }) {
-    const defaultValues = { genericSearch: "", locationSearch: "", checkbox: false }
+    const defaultValues = { genericSearchText: "", locationSearchText: "", fulltimeOnly: false }
 
     const {
         control,
@@ -29,7 +27,7 @@ export default function Filter({ searchCB }) {
 
     const onSubmit = (data) => {
         searchCB(data)
-        reset({ genericSearch: '', locationSearch: '', checkbox: false });
+        reset(defaultValues);
     };
 
     return (
@@ -50,7 +48,7 @@ export default function Filter({ searchCB }) {
                                 variant="standard"
                                 size="small"
                                 required
-                                {...register('genericSearch', { required: true })}
+                                {...register('genericSearchText', { required: true })}
                                 sx={{
                                     "& input": {
                                         padding: "0 !important",
@@ -66,7 +64,7 @@ export default function Filter({ searchCB }) {
                                 id="locationSearch"
                                 variant="standard"
                                 size="small"
-                                {...register('locationSearch')}
+                                {...register('locationSearchText')}
                                 sx={{
                                     "& input": {
                                         padding: "0 !important",
@@ -79,7 +77,7 @@ export default function Filter({ searchCB }) {
                             />
 
                             <Controller
-                                name='checkbox'
+                                name='fulltimeOnly'
                                 control={control}
                                 render={({ field }) => (
                                     <FormControlLabel
@@ -94,12 +92,7 @@ export default function Filter({ searchCB }) {
                                 )}
                             />
 
-
-
-
                             <Button variant="contained" type="submit">Search</Button>
-
-
                         </Stack>
                     </form>
                 </Paper>
