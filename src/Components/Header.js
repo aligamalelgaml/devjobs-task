@@ -5,6 +5,8 @@ import Box from '@mui/material/Box';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { ColorModeContext } from './JobPage';
+import backgroundImage from '../Assets/triangles.svg';
+
 
 
 export default function Header() {
@@ -15,7 +17,11 @@ export default function Header() {
 
     return (
         <>
-            <Paper sx={{ backgroundColor: theme.palette.primary.main, padding: "60px", borderRadius: "0px 0px 0px 100px" }} elevation={3}>
+            <Paper sx={{
+                backgroundColor: theme.palette.primary.main, padding: "60px", borderRadius: "0px 0px 0px 100px", backgroundImage: `url(${backgroundImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+            }} elevation={3}>
                 <Grid
                     container
                     direction="row"

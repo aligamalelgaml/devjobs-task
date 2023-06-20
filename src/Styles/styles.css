@@ -1,0 +1,39 @@
+.traingle-1 {
+  /* Triangle */
+  position: absolute;
+  width: 515px;
+  height: 457px;
+  left: 960.13px;
+  top: -313.54px;
+  background: #FFFFFF;
+  mix-blend-mode: normal;
+  opacity: 0.08;
+  border-radius: 41px;
+  transform: rotate(12deg);
+}
+
+.triangle-2 {
+  position: absolute;
+  width: 515px;
+  height: 457px;
+  left: 36.51px;
+  top: -247.98px;
+  background: #FFFFFF;
+  mix-blend-mode: normal;
+  opacity: 0.08;
+  border-radius: 41px;
+  transform: rotate(-35deg);
+}
+
+.triangle-3 {
+  position: absolute;
+  width: 515px;
+  height: 457px;
+  left: -289.49px;
+  top: 147.02px;
+  background: #FFFFFF;
+  mix-blend-mode: normal;
+  opacity: 0.08;
+  border-radius: 41px;
+  transform: rotate(-35deg);
+}

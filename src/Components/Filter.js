@@ -13,8 +13,10 @@ import {
 import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { useTheme } from '@mui/material/styles'; // Updated import statement
 
 export default function Filter({ searchCB }) {
+    const theme = useTheme();
     const defaultValues = { genericSearchText: "", locationSearchText: "", fulltimeOnly: false }
 
     const {
@@ -33,29 +35,35 @@ export default function Filter({ searchCB }) {
     return (
         <>
             <Container>
-                <Paper sx={{ marginTop: "-20px" }} elevation={3}>
+                <Paper sx={{ marginTop: "-20px", borderRadius: theme.shape.borderRadius }} elevation={3}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Stack
                             direction="row"
                             gap={3}
                             divider={<Divider orientation="vertical" flexItem />}
                             alignItems="center"
-                            justifyContent="center"
+                            justifyContent="space-evenly"
                             padding="20px"
-                        >
+                            sx={{
+                                borderRadius: theme.shape.borderRadius,
+                                backgroundColor: theme.palette.background.paper,
+                            }}>
+                                
                             <TextField
                                 id="genericSearch"
                                 variant="standard"
                                 size="small"
+                                placeholder='Filter by title, companies, expertise..'
                                 required
                                 {...register('genericSearchText', { required: true })}
                                 sx={{
                                     "& input": {
+                                        width: "100%",
                                         padding: "0 !important",
                                     },
                                 }}
                                 InputProps={{
-                                    startAdornment: <SearchIcon color="primary" />,
+                                    startAdornment: <SearchIcon color="primary" sx={{ marginRight: '8px' }} />,
                                     disableUnderline: true,
                                 }}
                             />
@@ -64,14 +72,16 @@ export default function Filter({ searchCB }) {
                                 id="locationSearch"
                                 variant="standard"
                                 size="small"
+                                placeholder='Filter by location..'
                                 {...register('locationSearchText')}
                                 sx={{
                                     "& input": {
+                                        width: "100%",
                                         padding: "0 !important",
                                     },
                                 }}
                                 InputProps={{
-                                    startAdornment: <LocationOnIcon color="primary" />,
+                                    startAdornment: <LocationOnIcon color="primary" sx={{ marginRight: '8px' }} />,
                                     disableUnderline: true,
                                 }}
                             />
