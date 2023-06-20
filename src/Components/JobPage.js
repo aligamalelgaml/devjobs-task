@@ -3,7 +3,9 @@ import React, { useState, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import { Button, Container, CssBaseline, Grid } from "@mui/material";
-import { useTheme } from '@mui/material/styles'; 
+import { useTheme } from '@mui/material/styles';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import JobDetails from './JobDetails';
 import Header from "./Header";
 import Filter from "./Filter";
 import JobCard from "./JobCard";
@@ -599,13 +601,9 @@ function JobPage() {
           marginTop: "70px"
         }}
       >
-        <Button variant="contained" sx={{ '&:hover': {backgroundColor: theme.palette.primary.hover}}}>Load More</Button>
-
+        <Button variant="contained" sx={{ '&:hover': { backgroundColor: theme.palette.primary.hover } }}>Load More</Button>
+        
       </Container>
-
-
-
-
     </>
   );
 }
@@ -618,7 +616,8 @@ const getDesignTokens = (mode) => ({
         // palette values for light mode
         primary: {
           main: "#5964E0",
-          hover: "#939BF4"
+          hover: "#939BF4",
+          btn: "#5964E0"
         },
         secondary: {
           main: 'rgba(89, 100, 224, 0.1)',
@@ -638,7 +637,8 @@ const getDesignTokens = (mode) => ({
         // palette values for dark mode
         primary: {
           main: "#5964E0",
-          hover: "#939BF4"
+          hover: "#939BF4",
+          btn: "white"
         },
         secondary: {
           main: 'rgba(89, 100, 224, 0.1)',
@@ -655,20 +655,20 @@ const getDesignTokens = (mode) => ({
         },
       }),
   },
-  
+
   components: {
     MuiSwitch: {
       styleOverrides: {
         switchBase: {
           // Controls default (unchecked) color for the thumb
           color: "#5964E0",
-          "&:hover": {color: "#939BF4"}
+          "&:hover": { color: "#939BF4" }
         },
         colorPrimary: {
           "&.Mui-checked": {
             // Controls checked color for the thumb
             color: "#5964E0",
-            "&:hover": {color: "#939BF4"}
+            "&:hover": { color: "#939BF4" }
           }
         },
         track: {
@@ -707,8 +707,12 @@ export default function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <JobPage />
-
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<JobPage />} />
+            <Route path="/job" element={<JobDetails />} />
+          </Routes>
+        </BrowserRouter>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

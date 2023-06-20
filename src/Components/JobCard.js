@@ -1,5 +1,7 @@
 import { Card, Typography, Avatar, CardHeader, CardContent } from '@mui/material'
-import { useTheme } from '@mui/material/styles'; // Updated import statement
+import { useTheme } from '@mui/material/styles';
+import { Link } from 'react-router-dom';
+
 
 
 export default function JobCard({ job }) {
@@ -30,7 +32,7 @@ export default function JobCard({ job }) {
                         </Typography>
 
                         <Typography variant="h6" gutterBottom>
-                            {job.title}
+                            <Link to="/job" state={{ job: job }} className='link'>{job.title}</Link>
                         </Typography>
 
                         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
