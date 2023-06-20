@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography, useTheme } from '@mui/material'
+import { Grid, Paper, Typography, Switch, useTheme } from '@mui/material'
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
@@ -34,11 +34,24 @@ export default function Header() {
 
                     <Grid item xs>
                         <Box display="flex" justifyContent="flex-end" alignItems="center" marginRight="50px" color="white">
-                            {theme.palette.mode} mode
-                            <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
-                                {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-                            </IconButton>
+                            <Brightness7Icon />
+                            <Switch
+                                checked={theme.palette.mode === 'dark'}
+                                onChange={colorMode.toggleColorMode}
+                                color="default"
+                                sx={{
+                                    marginLeft: '8px',
+                                    marginRight: '8px',
+                                    '& .MuiSwitch-thumb': {
+                                        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.grey[500],
+                                    },
+                                }}
+                            />
+                            <Brightness4Icon />
                         </Box>
+
+            
+
                     </Grid>
                 </Grid>
             </Paper>
