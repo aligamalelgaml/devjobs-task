@@ -8,7 +8,7 @@ export default function JobCard({ job }) {
     return (
         <>
             <Card elevation={0} style={{
-                height: '100%', display: 'flex', flexDirection: 'column', marginTop: "30px", border: 'none', backgroundColor: theme.palette.background.paper, position: "relative",
+                height: '100%', display: 'flex', flexDirection: 'column', marginTop: "30px", backgroundColor: theme.palette.background.paper, position: "relative",
                 overflow: "visible",
                 "& .MuiCardHeaderAvatar": {
                     position: "absolute",

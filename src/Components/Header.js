@@ -38,20 +38,10 @@ export default function Header() {
                             <Switch
                                 checked={theme.palette.mode === 'dark'}
                                 onChange={colorMode.toggleColorMode}
-                                color="default"
-                                sx={{
-                                    marginLeft: '8px',
-                                    marginRight: '8px',
-                                    '& .MuiSwitch-thumb': {
-                                        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.grey[500],
-                                    },
-                                }}
+                                sx={{marginLeft: '8px', marginRight: '8px'}}
                             />
                             <Brightness4Icon />
                         </Box>
-
-            
-
                     </Grid>
                 </Grid>
             </Paper>

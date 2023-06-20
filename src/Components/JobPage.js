@@ -3,6 +3,7 @@ import React, { useState, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import { Button, Container, CssBaseline, Grid } from "@mui/material";
+import { useTheme } from '@mui/material/styles'; 
 import Header from "./Header";
 import Filter from "./Filter";
 import JobCard from "./JobCard";
@@ -559,6 +560,7 @@ const testData = [
 ];
 
 function JobPage() {
+  const theme = useTheme();
   const [jobResults, setJobResults] = useState(testData);
   const [offset, setOffset] = useState(0);
 
@@ -597,7 +599,7 @@ function JobPage() {
           marginTop: "70px"
         }}
       >
-        <Button variant="contained">Load More</Button>
+        <Button variant="contained" sx={{ '&:hover': {backgroundColor: theme.palette.primary.hover}}}>Load More</Button>
 
       </Container>
 
@@ -608,11 +610,6 @@ function JobPage() {
   );
 }
 
-
-
-
-
-
 const getDesignTokens = (mode) => ({
   palette: {
     mode,
@@ -620,14 +617,16 @@ const getDesignTokens = (mode) => ({
       ? {
         // palette values for light mode
         primary: {
-          main: "#5964E0"
+          main: "#5964E0",
+          hover: "#939BF4"
         },
         secondary: {
-          main: "#939BF4"
+          main: 'rgba(89, 100, 224, 0.1)',
+          hover: 'rgba(89, 100, 224, 0.35)'
         },
         background: {
-          default: "#FFFFFF",
-          paper: "#F4F6F8",
+          default: "#F4F6F8",
+          paper: "#FFFFFF",
         },
         divider: 'rgba(110, 128, 152, 0.2)',
         text: {
@@ -638,10 +637,12 @@ const getDesignTokens = (mode) => ({
       : {
         // palette values for dark mode
         primary: {
-          main: "#5964E0"
+          main: "#5964E0",
+          hover: "#939BF4"
         },
         secondary: {
-          main: "#939BF4"
+          main: 'rgba(89, 100, 224, 0.1)',
+          hover: 'rgba(89, 100, 224, 0.35)'
         },
         divider: 'rgba(110, 128, 152, 0.2)',
         background: {
@@ -654,6 +655,35 @@ const getDesignTokens = (mode) => ({
         },
       }),
   },
+  
+  components: {
+    MuiSwitch: {
+      styleOverrides: {
+        switchBase: {
+          // Controls default (unchecked) color for the thumb
+          color: "#5964E0",
+          "&:hover": {color: "#939BF4"}
+        },
+        colorPrimary: {
+          "&.Mui-checked": {
+            // Controls checked color for the thumb
+            color: "#5964E0",
+            "&:hover": {color: "#939BF4"}
+          }
+        },
+        track: {
+          // Controls default (unchecked) color for the track
+          opacity: 0.2,
+          backgroundColor: "#fff",
+          ".Mui-checked.Mui-checked + &": {
+            // Controls checked color for the track
+            opacity: 0.7,
+            backgroundColor: "#fff"
+          }
+        }
+      }
+    }
+  }
 });
 
 export default function App() {

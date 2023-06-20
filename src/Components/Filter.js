@@ -13,7 +13,7 @@ import {
 import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { useTheme } from '@mui/material/styles'; // Updated import statement
+import { useTheme } from '@mui/material/styles'; 
 
 export default function Filter({ searchCB }) {
     const theme = useTheme();
@@ -102,7 +102,7 @@ export default function Filter({ searchCB }) {
                                 )}
                             />
 
-                            <Button variant="contained" type="submit">Search</Button>
+                            <Button variant="contained" type="submit" sx={{ '&:hover': {backgroundColor: theme.palette.primary.hover}}}>Search</Button>
                         </Stack>
                     </form>
                 </Paper>
