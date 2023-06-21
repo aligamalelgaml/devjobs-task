@@ -1,30 +1,19 @@
 import { useForm, Controller } from 'react-hook-form';
-
-import {
-    Stack,
-    Divider,
-    Container,
-    Paper,
-    TextField,
-    FormControlLabel,
-    Checkbox,
-    Button,
-} from "@mui/material";
+import { Stack, Divider, Container, Paper, TextField, FormControlLabel, Checkbox, Button } from "@mui/material";
 import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { useTheme } from '@mui/material/styles'; 
+import { useTheme } from '@mui/material/styles';
 
 export default function Filter({ searchCB }) {
     const theme = useTheme();
-    const defaultValues = { genericSearchText: "", locationSearchText: "", fulltimeOnly: false }
+    const defaultValues = { genericSearchText: "", locationSearchText: "", fulltimeChecked: false }
 
     const {
         control,
         register,
         handleSubmit,
         reset,
-        formState: { errors }
     } = useForm({ defaultValues });
 
     const onSubmit = (data) => {
@@ -38,7 +27,7 @@ export default function Filter({ searchCB }) {
                 <Paper sx={{ marginTop: "-20px", borderRadius: theme.shape.borderRadius }} elevation={3}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Stack
-                            direction="row"
+                            direction={{ xs: 'column', sm: 'row' }}
                             gap={3}
                             divider={<Divider orientation="vertical" flexItem />}
                             alignItems="center"
@@ -48,8 +37,8 @@ export default function Filter({ searchCB }) {
                                 borderRadius: theme.shape.borderRadius,
                                 backgroundColor: theme.palette.background.paper,
                             }}>
-                                
-                            <TextField
+
+                            <TextField fullWidth
                                 id="genericSearch"
                                 variant="standard"
                                 size="small"
@@ -68,7 +57,7 @@ export default function Filter({ searchCB }) {
                                 }}
                             />
 
-                            <TextField
+                            <TextField fullWidth
                                 id="locationSearch"
                                 variant="standard"
                                 size="small"
@@ -87,7 +76,7 @@ export default function Filter({ searchCB }) {
                             />
 
                             <Controller
-                                name='fulltimeOnly'
+                                name='fulltimeChecked'
                                 control={control}
                                 render={({ field }) => (
                                     <FormControlLabel
@@ -97,12 +86,15 @@ export default function Filter({ searchCB }) {
                                                 field.onChange(e.target.checked); // Update field value
                                             }}
                                         />}
-                                        label='Full Time Only'
+                                        label='Full-Time Only'
+                                        sx={{
+                                            whiteSpace: 'nowrap', // Prevents label wrapping
+                                        }}
                                     />
                                 )}
                             />
 
-                            <Button variant="contained" type="submit" sx={{ '&:hover': {backgroundColor: theme.palette.primary.hover}}}>Search</Button>
+                            <Button variant="contained" type="submit" sx={{ padding: "10px 30px 10px 30px",  '&:hover': { backgroundColor: theme.palette.primary.hover } }}>Search</Button>
                         </Stack>
                     </form>
                 </Paper>

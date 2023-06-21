@@ -2,13 +2,11 @@ import { Card, Typography, Avatar, CardHeader, CardContent } from '@mui/material
 import { useTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 
-
-
 export default function JobCard({ job }) {
     const theme = useTheme();
 
     return (
-        <>
+        <>  
             <Card elevation={0} style={{
                 height: '100%', display: 'flex', flexDirection: 'column', marginTop: "30px", backgroundColor: theme.palette.background.paper, position: "relative",
                 overflow: "visible",

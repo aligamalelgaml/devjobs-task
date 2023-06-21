@@ -4,20 +4,21 @@ import { useLocation } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import Header from './Header';
 
+/**
+ * Helper function that grabs the correct json object from an array with {titleToMatch} title. This is due to the structure of the API JSON response.
+ */
 const getJobHighlights = (array, titleToMatch) => {
     return array.find(obj => obj.title === titleToMatch);
 };
 
 
 export default function JobDetails() {
-    const location = useLocation();
     const theme = useTheme();
-    const { job } = location.state;
+    const location = useLocation(); // Get current job object from state passed via react link.
+    const { job } = location.state; 
 
-    const qualifications = getJobHighlights(job.job_highlights, "Qualifications");
+    const qualifications = getJobHighlights(job.job_highlights, "Qualifications"); 
     const responsibilities = getJobHighlights(job.job_highlights, "Responsibilities");
-    const benefits = getJobHighlights(job.job_highlights, "Benefits");
-
 
     return (
         <>
@@ -37,7 +38,7 @@ export default function JobDetails() {
                     <Box sx={{ display: "flex", flexDirection: "row" }}>
 
                         <div style={{ width: "100px", borderRadius: 2 }}>
-                            <img src={job.thumbnail} style={{ objectFit: "cover", width: "100%", height: "100%", borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }}>
+                            <img src={job.thumbnail} alt="company logo" style={{ objectFit: "cover", width: "100%", height: "100%", borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }}>
                             </img>
                         </div>
 
@@ -75,7 +76,7 @@ export default function JobDetails() {
                 }}>
                     <div>
                         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            {job.detected_extensions.posted_at && <>{job.detected_extensions.posted_at} &#x2022; </>}
+                            {(job.detected_extensions.posted_at && job.detected_extensions.schedule_type) && <>{job.detected_extensions.posted_at} &#x2022; </>}
                             {job.detected_extensions.schedule_type}
                         </Typography>
                     </div>
@@ -98,26 +99,57 @@ export default function JobDetails() {
                             </div>
                         </Stack>
 
-                        <div style={{marginTop: "20px"}}>
-                                <Typography variant='body1'>
-                                    {job.description}
-                                </Typography>
+                        <div style={{ marginTop: "20px" }}>
+                            <Typography variant='body1'>
+                                {job.description}
+                            </Typography>
                         </div>
 
-                        <div>
-                            {console.log(qualifications)}
+                        <div style={{ marginTop: "20px" }}>
+                            <Typography variant='h6' fontWeight={"600"} gutterBottom>
+                                Requirements
+                            </Typography>
+
+                            {qualifications.items.map((item, index) => <li key={index}>{item}</li>)}
                         </div>
 
-                        <div>
-                            {console.log(responsibilities)}
+                        <div style={{ marginTop: "20px" }}>
+                            <Typography variant='h6' fontWeight={"600"} gutterBottom>
+                                Responsibilities
+                            </Typography>
+                            {responsibilities.items.map((item, index) => <li key={index}>{item}</li>)}
                         </div>
-
                     </div>
                 </Stack>
             </Container>
 
 
+            <Stack sx={{
+                borderRadius: 2,
+                backgroundColor: theme.palette.background.paper,
+                marginTop: "20px",
+                width: "100vw",
+                padding: "20px"
+            }}>
 
+                <Container sx={{ width: "42vw" }}>
+                    <Stack direction={"row"} sx={{justifyContent: "space-between", alignItems: "center" }}>
+                        <div>
+                            <Typography variant="h6" sx={{ fontWeight: "650" }}>
+                                {job.title}
+                            </Typography>
+
+                            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: "700" }}>
+                                {job.company_name}
+                            </Typography>
+                        </div>
+
+                        <div>
+                            <Button variant="contained" sx={{ marginRight:"5px", '&:hover': { backgroundColor: theme.palette.primary.hover } }}>Apply Now</Button>
+                        </div>
+                    </Stack>
+                </Container>
+            </Stack>
         </>
     );
 }

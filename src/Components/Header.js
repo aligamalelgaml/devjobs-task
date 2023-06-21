@@ -1,19 +1,13 @@
-import { Grid, Paper, Typography, Switch, useTheme } from '@mui/material'
+import { Grid, Paper, Typography, Switch, Box, useTheme } from '@mui/material'
 import React from 'react';
-import IconButton from '@mui/material/IconButton';
-import Box from '@mui/material/Box';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { ColorModeContext } from './JobPage';
 import backgroundImage from '../Assets/triangles.svg';
 
-
-
 export default function Header() {
     const theme = useTheme();
     const colorMode = React.useContext(ColorModeContext);
-
-
 
     return (
         <>
@@ -24,16 +18,17 @@ export default function Header() {
             }} elevation={3}>
                 <Grid
                     container
-                    direction="row"
+                    direction={{ xs: 'column', sm: 'row' }}
                     justifyContent="space-between"
                     alignItems="center"
+                    padding= "20px"
                 >
                     <Grid item xs>
-                        <Typography sx={{ color: "white", marginLeft: "50px", fontWeight: "800" }} variant="h4">devjobs</Typography>
+                        <Typography sx={{ color: "white", fontWeight: "800" }} variant="h4">devjobs</Typography>
                     </Grid>
 
                     <Grid item xs>
-                        <Box display="flex" justifyContent="flex-end" alignItems="center" marginRight="50px" color="white">
+                        <Box display="flex" justifyContent="flex-end" alignItems="center" color="white">
                             <Brightness7Icon />
                             <Switch
                                 checked={theme.palette.mode === 'dark'}
@@ -45,8 +40,6 @@ export default function Header() {
                     </Grid>
                 </Grid>
             </Paper>
-
         </>
     )
-
 }
