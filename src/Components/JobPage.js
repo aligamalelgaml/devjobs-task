@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState, useMemo, useEffect } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
-import { Button, Container, CssBaseline, Grid } from "@mui/material";
+import { Button, Container, CssBaseline, Grid, Alert, Stack } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import JobDetails from './JobDetails';
@@ -19,6 +19,8 @@ function JobPage() {
   const [offset, setOffset] = useState(0);
   const [fulltimeOnly, setFulltimeoOnly] = useState(false);
   const [searchParams, setSearchParams] = useState([]);
+  const [noResultsAvailable, setNoResultsAvailable] = useState(false);
+
 
   /**
    * Main function responsiable for making a new search, accepts search strings and boolean value for full time job filtering.
@@ -27,36 +29,46 @@ function JobPage() {
   const search = ({ genericSearchText, locationSearchText, fulltimeChecked }) => {
     console.log("Searching for:", genericSearchText, " @", locationSearchText, " and full time only: ", fulltimeChecked)
 
+
+    setNoResultsAvailable(false); // Reset no results available alert.
     setOffset(0); // Reset offset to be able to use Load More button correctly.
     setSearchParams([genericSearchText, locationSearchText]); // Keep values of current search to create additional searches later on.
     setFulltimeoOnly(fulltimeChecked); // State tracking value of full time job filtering to be turned on or off.
 
     axios.get(`https://cors-anywhere.herokuapp.com/https://serpapi.com/search.json?engine=google_jobs&q=${genericSearchText}&location=${locationSearchText}&api_key=64d6fcdf8161678935df1bc459aca0b9a5c1c075b31a9cdea28f83993ada40c0`)
-    .then(results => setJobResults(results.data.jobs_results))
-    .catch(error =>console.error(error));
+      .then(results => setJobResults(results.data.jobs_results))
+      .catch(error => console.error(error));
   }
 
   /**
    * Increments offset by 10, useEffect will create a new fetch request with correct offset once setOffset is finished updating & not equal to zero.
    */
   const loadMore = () => {
-    setOffset(offset + 10); 
+    setOffset(offset + 10);
   }
 
   /**
    * Main function responsible for fetching more jobs, relies on current offset to skip first {offset} jobs and fetch the next 10.
    */
   useEffect(() => {
-    if(offset !== 0) {
-      axios.get(`https://cors-anywhere.herokuapp.com/https://serpapi.com/search.json?engine=google_jobs&q=${searchParams[0]}&location=${searchParams[1]}&start=${offset}&api_key=64d6fcdf8161678935df1bc459aca0b9a5c1c075b31a9cdea28f83993ada40c0`)
-      .then(results => setJobResults(jobResults.concat(results.data.jobs_results)))
-      .catch(error =>console.error(error));
+    if (offset !== 0) {
+      axios
+        .get(`https://cors-anywhere.herokuapp.com/https://serpapi.com/search.json?engine=google_jobs&q=${searchParams[0]}&location=${searchParams[1]}&start=${offset}&api_key=64d6fcdf8161678935df1bc459aca0b9a5c1c075b31a9cdea28f83993ada40c0`)
+        .then(results => {
+          const newJobResults = results.data.jobs_results || []; // If jobs_results returns undefined due to no more results return an empty array
+          setJobResults(prevJobResults => prevJobResults.concat(newJobResults));
+          if (newJobResults.length === 0) {
+            setNoResultsAvailable(true); // Set the flag to true when no results are available
+          }
+        })
+        .catch(error => console.error(error));
     }
-  }, [offset])
+  }, [offset]);
+
 
   // const loadMore = async () => {
   //   setOffset(offset + 10);
-  
+
   //   try {
   //     await setOffset(offset + 10);
   //     const response = await axios.get(`https://cors-anywhere.herokuapp.com/https://serpapi.com/search.json?engine=google_jobs&q=${searchParams[0]}&location=${searchParams[1]}&start=${offset}&api_key=64d6fcdf8161678935df1bc459aca0b9a5c1c075b31a9cdea28f83993ada40c0`);
@@ -65,9 +77,10 @@ function JobPage() {
   //     console.error(error);
   //   }
   // };
-  
+
   return (
     <>
+      {console.log(jobResults)}
       <Header />
       <Filter searchCB={search} />
 
@@ -93,9 +106,15 @@ function JobPage() {
           marginTop: "70px"
         }}
       >
-        
-      {jobResults.length !== 0 && <Button onClick={loadMore} variant="contained" sx={{ '&:hover': { backgroundColor: theme.palette.primary.hover } }}>Load More</Button>}
+        <Stack gap={4}>
+          {noResultsAvailable && (
+            <Alert severity="info">
+              No more results available.
+            </Alert>
+          )}
 
+          {jobResults.length !== 0 && <Button onClick={loadMore} variant="contained" sx={{ '&:hover': { backgroundColor: theme.palette.primary.hover } }}>Load More</Button>}
+        </Stack>
       </Container>
     </>
   );

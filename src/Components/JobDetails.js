@@ -15,9 +15,9 @@ const getJobHighlights = (array, titleToMatch) => {
 export default function JobDetails() {
     const theme = useTheme();
     const location = useLocation(); // Get current job object from state passed via react link.
-    const { job } = location.state; 
+    const { job } = location.state;
 
-    const qualifications = getJobHighlights(job.job_highlights, "Qualifications"); 
+    const qualifications = getJobHighlights(job.job_highlights, "Qualifications");
     const responsibilities = getJobHighlights(job.job_highlights, "Responsibilities");
 
     return (
@@ -49,7 +49,7 @@ export default function JobDetails() {
                                 </Typography>
 
                                 <Typography variant="body1" color="text.secondary">
-                                    LINK PLACEHOLDER
+                                    Link Placeholder
                                 </Typography>
                             </Stack>
                         </div>
@@ -105,20 +105,27 @@ export default function JobDetails() {
                             </Typography>
                         </div>
 
-                        <div style={{ marginTop: "20px" }}>
-                            <Typography variant='h6' fontWeight={"600"} gutterBottom>
-                                Requirements
-                            </Typography>
+                        {qualifications &&
+                            <div style={{ marginTop: "20px" }}>
+                                <Typography variant='h6' fontWeight={"600"} gutterBottom>
+                                    Requirements
+                                </Typography>
 
-                            {qualifications.items.map((item, index) => <li key={index}>{item}</li>)}
-                        </div>
+                                {qualifications.items.map((item, index) => <li key={index}>{item}</li>)}
+                            </div>
+                        }
 
-                        <div style={{ marginTop: "20px" }}>
-                            <Typography variant='h6' fontWeight={"600"} gutterBottom>
-                                Responsibilities
-                            </Typography>
-                            {responsibilities.items.map((item, index) => <li key={index}>{item}</li>)}
-                        </div>
+                        {responsibilities && (
+                            <div style={{ marginTop: "20px" }}>
+                                <Typography variant='h6' fontWeight={"600"} gutterBottom>
+                                    Responsibilities
+                                </Typography>
+                                {responsibilities.items.map((item, index) => (
+                                    <li key={index}>{item}</li>
+                                ))}
+                            </div>
+                        )}
+
                     </div>
                 </Stack>
             </Container>
@@ -133,7 +140,7 @@ export default function JobDetails() {
             }}>
 
                 <Container sx={{ width: "42vw" }}>
-                    <Stack direction={"row"} sx={{justifyContent: "space-between", alignItems: "center" }}>
+                    <Stack direction={"row"} sx={{ justifyContent: "space-between", alignItems: "center" }}>
                         <div>
                             <Typography variant="h6" sx={{ fontWeight: "650" }}>
                                 {job.title}
@@ -145,7 +152,7 @@ export default function JobDetails() {
                         </div>
 
                         <div>
-                            <Button variant="contained" sx={{ marginRight:"5px", '&:hover': { backgroundColor: theme.palette.primary.hover } }}>Apply Now</Button>
+                            <Button variant="contained" sx={{ marginRight: "5px", '&:hover': { backgroundColor: theme.palette.primary.hover } }}>Apply Now</Button>
                         </div>
                     </Stack>
                 </Container>

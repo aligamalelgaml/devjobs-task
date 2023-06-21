@@ -85,6 +85,7 @@ export default function Filter({ searchCB }) {
                                             onChange={(e) => {
                                                 field.onChange(e.target.checked); // Update field value
                                             }}
+                                            sx={{'&:hover': { color: theme.palette.primary.hover }}}
                                         />}
                                         label='Full-Time Only'
                                         sx={{
@@ -94,7 +95,7 @@ export default function Filter({ searchCB }) {
                                 )}
                             />
 
-                            <Button variant="contained" type="submit" sx={{ padding: "10px 30px 10px 30px",  '&:hover': { backgroundColor: theme.palette.primary.hover } }}>Search</Button>
+                            <Button variant="contained" type="submit" sx={{ padding: "10px 30px 10px 30px",  '&:hover': { backgroundColor: theme.palette.primary.main } }}>Search</Button>
                         </Stack>
                     </form>
                 </Paper>
