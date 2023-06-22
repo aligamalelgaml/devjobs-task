@@ -54,7 +54,7 @@ export default function JobDetails() {
                                     </Typography>
 
                                     <Typography variant="body1" color="text.secondary">
-                                        Link Placeholder
+                                        {job.related_links[0]?.text}
                                     </Typography>
                                 </Stack>
                             </div>
@@ -95,14 +95,14 @@ export default function JobDetails() {
 
                         <div>
                             <Stack>
-                                <Box sx={{display: "flex", justifyContent: "center"}}>
-                                <Typography variant="h5" sx={{ fontWeight: "700" }} gutterBottom>
-                                    {job.company_name}
-                                </Typography>
+                                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                                    <Typography variant="h5" sx={{ fontWeight: "700" }} gutterBottom>
+                                        {job.company_name}
+                                    </Typography>
                                 </Box>
 
                                 <Typography variant="body1" color="text.secondary">
-                                    {job.related_links[0].text}
+                                    {job.related_links[0]?.text}
                                 </Typography>
                             </Stack>
                         </div>
@@ -157,8 +157,8 @@ export default function JobDetails() {
                                 </Typography>
                             </div>
 
-                            <div style={{display: "flex", justifyContent: "center"}}>
-                                <Button variant="contained" sx={{'&:hover': { backgroundColor: theme.palette.primary.hover } }}>Apply Now</Button>
+                            <div style={{ display: "flex", justifyContent: "center" }}>
+                                <Button variant="contained" sx={{ '&:hover': { backgroundColor: theme.palette.primary.hover } }}>Apply Now</Button>
                             </div>
                         </Stack>
 
