@@ -18,7 +18,7 @@ export default function Header() {
             }} elevation={3}>
                 <Grid
                     container
-                    direction={{ xs: 'column', sm: 'row' }}
+                    direction={"row"}
                     justifyContent="space-between"
                     alignItems="center"
                     padding= "20px"

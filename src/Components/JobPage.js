@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState, useMemo, useEffect } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
-import { Button, Container, CssBaseline, Grid, Alert, Stack } from "@mui/material";
+import { Button, Container, CssBaseline, Grid, Alert, Stack, Box, CircularProgress } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import JobDetails from './JobDetails';
@@ -20,7 +20,7 @@ function JobPage() {
   const [fulltimeOnly, setFulltimeoOnly] = useState(false);
   const [searchParams, setSearchParams] = useState([]);
   const [noResultsAvailable, setNoResultsAvailable] = useState(false);
-
+  const [loading, setLoading] = useState(false);
 
   /**
    * Main function responsiable for making a new search, accepts search strings and boolean value for full time job filtering.
@@ -29,15 +29,22 @@ function JobPage() {
   const search = ({ genericSearchText, locationSearchText, fulltimeChecked }) => {
     console.log("Searching for:", genericSearchText, " @", locationSearchText, " and full time only: ", fulltimeChecked)
 
-
+    setLoading(true); // Start loading when search is triggered
     setNoResultsAvailable(false); // Reset no results available alert.
     setOffset(0); // Reset offset to be able to use Load More button correctly.
     setSearchParams([genericSearchText, locationSearchText]); // Keep values of current search to create additional searches later on.
     setFulltimeoOnly(fulltimeChecked); // State tracking value of full time job filtering to be turned on or off.
 
     axios.get(`https://cors-anywhere.herokuapp.com/https://serpapi.com/search.json?engine=google_jobs&q=${genericSearchText}&location=${locationSearchText}&api_key=64d6fcdf8161678935df1bc459aca0b9a5c1c075b31a9cdea28f83993ada40c0`)
-      .then(results => setJobResults(results.data.jobs_results))
-      .catch(error => console.error(error));
+      .then(results => {
+        const newJobResults = results.data.jobs_results || [];
+        setJobResults(newJobResults);
+        setLoading(false); // Stop loading when results are fetched
+      })
+      .catch(error => {
+        console.error(error);
+        setLoading(false); // Stop loading if there's an error
+      });
   }
 
   /**
@@ -45,6 +52,7 @@ function JobPage() {
    */
   const loadMore = () => {
     setOffset(offset + 10);
+    setLoading(true); // Start loading when load more button is clicked
   }
 
   /**
@@ -60,23 +68,11 @@ function JobPage() {
           if (newJobResults.length === 0) {
             setNoResultsAvailable(true); // Set the flag to true when no results are available
           }
+          setLoading(false); // Stop loading once results are retrieved.
         })
         .catch(error => console.error(error));
     }
   }, [offset]);
-
-
-  // const loadMore = async () => {
-  //   setOffset(offset + 10);
-
-  //   try {
-  //     await setOffset(offset + 10);
-  //     const response = await axios.get(`https://cors-anywhere.herokuapp.com/https://serpapi.com/search.json?engine=google_jobs&q=${searchParams[0]}&location=${searchParams[1]}&start=${offset}&api_key=64d6fcdf8161678935df1bc459aca0b9a5c1c075b31a9cdea28f83993ada40c0`);
-  //     setJobResults(jobResults.concat(response.data.jobs_results));
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   return (
     <>
@@ -85,6 +81,7 @@ function JobPage() {
       <Filter searchCB={search} />
 
       <Container sx={{ marginTop: "35px" }}>
+
         <Grid container rowSpacing={8} columnSpacing={4}>
           {jobResults
             .filter(job => !fulltimeOnly || job.detected_extensions.schedule_type === 'Full-time')
@@ -95,6 +92,11 @@ function JobPage() {
             ))}
         </Grid>
 
+        {loading &&
+          <Box sx={{ display: "flex", justifyContent: "center", marginTop: "100px" }}>
+            <CircularProgress />
+          </Box>
+        }
 
       </Container>
 
